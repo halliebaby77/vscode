@@ -444,7 +444,7 @@ export class ChatService extends Disposable implements IChatService {
 			this._transferredSessionData = undefined;
 		}
 
-		return this._startSession(sessionData, sessionData.initialLocation ?? ChatAgentLocation.Panel, CancellationToken.None);
+		return this._startSession(sessionData, sessionData.chatAgentLocation, CancellationToken.None);
 	}
 
 	loadSessionFromContent(data: IExportableChatData | ISerializableChatData): IChatModel | undefined {

@@ -943,6 +943,7 @@ export interface IExportableChatData {
 	responderUsername: string;
 	requesterAvatarIconUri: UriComponents | undefined;
 	responderAvatarIconUri: ThemeIcon | UriComponents | undefined; // Keeping Uri name for backcompat
+	chatAgentLocation: ChatAgentLocation;
 }
 
 /*
@@ -1245,6 +1246,8 @@ export class ChatModel extends Disposable implements IChatModel {
 		return this._initialLocation;
 	}
 
+	private _chatAgentLocation: ChatAgentLocation;
+
 	constructor(
 		private readonly initialData: ISerializableChatData | IExportableChatData | undefined,
 		private readonly _initialLocation: ChatAgentLocation,
@@ -1267,6 +1270,8 @@ export class ChatModel extends Disposable implements IChatModel {
 
 		this._initialRequesterAvatarIconUri = initialData?.requesterAvatarIconUri && URI.revive(initialData.requesterAvatarIconUri);
 		this._initialResponderAvatarIconUri = isUriComponents(initialData?.responderAvatarIconUri) ? URI.revive(initialData.responderAvatarIconUri) : initialData?.responderAvatarIconUri;
+
+		this._chatAgentLocation = _initialLocation;
 	}
 
 	private _deserialize(obj: IExportableChatData): ChatRequestModel[] {
@@ -1547,6 +1552,7 @@ export class ChatModel extends Disposable implements IChatModel {
 			responderUsername: this.responderUsername,
 			responderAvatarIconUri: this.responderAvatarIcon,
 			initialLocation: this.initialLocation,
+			chatAgentLocation: this._chatAgentLocation,
 			requests: this._requests.map((r): ISerializableChatRequestData => {
 				const message = {
 					...r.message,
@@ -1597,7 +1603,8 @@ export class ChatModel extends Disposable implements IChatModel {
 			creationDate: this._creationDate,
 			isImported: this._isImported,
 			lastMessageDate: this._lastMessageDate,
-			customTitle: this._customTitle
+			customTitle: this._customTitle,
+			chatAgentLocation: this._chatAgentLocation
 		};
 	}
 
